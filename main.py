@@ -10,7 +10,7 @@ ROOT = Path(__file__).parent
 IMAGES = ROOT.joinpath("images")
 DATA_PATH = ROOT.joinpath("data") / "french_words.csv"
 
-timer_id = None
+flip_timer = None
 
 data = pd.read_csv(DATA_PATH)
 data_list = data.to_dict("records")
@@ -18,18 +18,21 @@ current_card = {}
 
 # ---------------- Logic -------------------
 def next_card():
-    global current_card
+    global current_card, flip_timer
+
+    window.after_cancel(flip_timer)
+
     current_card = utils.random_word(data_list)
     canvas.itemconfig(card_bg, image=front)
     canvas.itemconfig(card_title, text="French", fill="black")
     canvas.itemconfig(card_word, text=current_card["French"], fill="black")
 
+    flip_timer = window.after(3000, flip_card)
+
 def flip_card():
     canvas.itemconfig(card_bg, image=back)
     canvas.itemconfig(card_title, text="English", fill="white")
     canvas.itemconfig(card_word, text=current_card["English"], fill="white")
-
-    window.after_cancel(timer_id)
 
 # ---------------- Window setup ----------------------
 window = tkinter.Tk()
@@ -37,7 +40,7 @@ window.title("Flashy")
 window.config(bg=BACKGROUND_COLOR, padx=50, pady=50)
 window.resizable(False, False)
 
-timer_id = window.after(3000, flip_card)
+flip_timer = window.after(3000, flip_card)
 
 # ---------------- Card back & front background -------------------
 back = tkinter.PhotoImage(file=IMAGES.joinpath("card_back.png"))
