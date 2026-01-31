@@ -15,7 +15,7 @@ canvas = tkinter.Canvas(width=800, height=526, bg=BACKGROUND_COLOR)
 card_background = tkinter.PhotoImage(file=IMAGES.joinpath("card_front.png"))
 canvas.create_image(400, 263, image=card_background)
 
-language = canvas.create_text(400, 150, text="French", font=("Arial", 40, "italic"))
+language = canvas.create_text(400, 150, text="French", font=("Arial", 25, "italic"))
 word = canvas.create_text(400, 263, text="trouve", font=("Arial", 60, "bold"))
 
 canvas.grid(row=0, column=0, columnspan=2)
