@@ -2,8 +2,11 @@ import tkinter
 from pathlib import Path
 
 BACKGROUND_COLOR = "#B1DDC6"
-IMAGES = Path(__file__).parent.joinpath("images")
+ROOT = Path(__file__).parent
+IMAGES = ROOT.joinpath("images")
+DATA_PATH = ROOT.joinpath("data") / "french_words.csv"
 
+# window setup
 window = tkinter.Tk()
 window.title("Flashy")
 window.config(bg=BACKGROUND_COLOR, padx=50, pady=50)
