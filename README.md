@@ -97,7 +97,7 @@ This app is designed to be lightweight, intuitive, and easy to extend — ideal 
 ---
 
 ## 📄 License  
-MIT
+[MIT](LICENSE)
 
 ---
 
