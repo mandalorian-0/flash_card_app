@@ -1,7 +1,6 @@
 import tkinter
 import pandas as pd
 from pathlib import Path
-from functools import partial
 
 from cards import utils
 
@@ -9,14 +8,27 @@ BACKGROUND_COLOR = "#B1DDC6"
 ROOT = Path(__file__).parent
 IMAGES = ROOT.joinpath("images")
 DATA_PATH = ROOT.joinpath("data") / "french_words.csv"
+WORD_TO_LEARN_PATH = ROOT.joinpath("data") / "words_to_learn.csv"
 
 flip_timer = None
 
-data = pd.read_csv(DATA_PATH)
+if Path(WORD_TO_LEARN_PATH).exists():
+    data = pd.read_csv(WORD_TO_LEARN_PATH)
+else:
+    data = pd.read_csv(DATA_PATH)
+
 data_list = data.to_dict("records")
+
 current_card = {}
 
 # ---------------- Logic -------------------
+def know_word():
+    data_list.remove(current_card)
+    words_to_learn_df = pd.DataFrame(data_list)
+    words_to_learn_df.to_csv(WORD_TO_LEARN_PATH, index=False)
+
+    next_card()
+
 def next_card():
     global current_card, flip_timer
 
@@ -65,7 +77,7 @@ wrong_button = tkinter.Button(image=is_not_known_img, highlightthickness=0, bord
 right_button = tkinter.Button(image=is_known_img, highlightthickness=0, border=0, cursor="hand2")
 
 wrong_button.config(command=next_card)
-right_button.config(command=next_card)
+right_button.config(command=know_word)
 
 wrong_button.grid(row=1, column=0)
 right_button.grid(row=1, column=1)
